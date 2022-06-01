@@ -64,7 +64,7 @@ core.register_on_joinplayer(function(player)
 end)
 
 
-core.register_chatcommand("players", {
+core.register_chatcommand("players", { --originally from better_nametags
          description = "List all players currently online.",
          func = function(name, _)
                  local onlineCount = #(core.get_connected_players())
