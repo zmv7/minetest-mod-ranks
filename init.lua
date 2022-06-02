@@ -48,7 +48,7 @@ core.register_chatcommand("setrank", {
     if not pmeta then return end
     pmeta:set_string("rank",rank)
     pmeta:set_string("rankcolor",color)
-    player:set_nametag_attributes({text = core.colorize(color,"["..rank.."] ")..name})
+    player:set_nametag_attributes({text = core.colorize(color,"["..rank.."] ")..pname})
     return true,"Rank of "..pname..' now set to '..core.colorize(color,rank)
 end})
 
