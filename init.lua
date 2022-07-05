@@ -5,16 +5,15 @@ core.register_on_chat_message(function(name,message)
  local pmeta = player:get_meta()
  if not pmeta then return end
  local rank = pmeta:get_string("rank")
- if not rank or rank == "" then rank = "Player" end
+ --if not rank or rank == "" then rank = "[Player] " end
  local color = pmeta:get_string("rankcolor")
- if not color or color == "" then color = "#BBB" end
- local pf = core.colorize(color,rank)
- if core.global_exists(irc) then
+ --if not color or color == "" then color = "#BBB" end
+ if rank and rank ~= "" then
  irc.say("<"..name.."> "..core.strip_colors(message))
- end
- core.log("action","CHAT: "..core.format_chat_message("["..rank.."] "..name,core.strip_colors(message)))
- core.chat_send_all(core.format_chat_message(core.colorize(color,"["..rank.."] ")..name,message))
+ core.log("action","CHAT: "..core.format_chat_message(rank..name,core.strip_colors(message)))
+ core.chat_send_all(core.format_chat_message(core.colorize(color,rank)..name,message))
  return true
+ end
 end)
 core.register_chatcommand("getrank", {
  description="Get rank of player or you",
@@ -46,7 +45,7 @@ core.register_chatcommand("setrank", {
     if not player then return false,"Invalid player" end
     local pmeta = player:get_meta()
     if not pmeta then return end
-    pmeta:set_string("rank",rank)
+    pmeta:set_string("rank","["..rank.."] ")
     pmeta:set_string("rankcolor",color)
     player:set_nametag_attributes({text = core.colorize(color,"["..rank.."] ")..pname})
     return true,"Rank of "..pname..' now set to '..core.colorize(color,rank)
@@ -57,14 +56,14 @@ core.register_on_joinplayer(function(player)
     local pmeta = player:get_meta()
     if not pmeta then return end
     local rank = pmeta:get_string("rank")
-    if not rank or rank == "" then rank = "Player" end
+    --if not rank or rank == "" then rank = "[Player] " end
     local color = pmeta:get_string("rankcolor")
-    if not color or color == "" then color = "#BBB" end
-    player:set_nametag_attributes({text = core.colorize(color,"["..rank.."] ")..name})
+    --if not color or color == "" then color = "#BBB" end
+    player:set_nametag_attributes({text = core.colorize(color,rank)..name})
 end)
 
 
-core.register_chatcommand("players", { --originally from better_nametags
+core.register_chatcommand("players", {
          description = "List all players currently online.",
          func = function(name, _)
                  local onlineCount = #(core.get_connected_players())
