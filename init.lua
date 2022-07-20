@@ -9,7 +9,9 @@ core.register_on_chat_message(function(name,message)
  local color = pmeta:get_string("rankcolor")
  --if not color or color == "" then color = "#BBB" end
  if rank and rank ~= "" and core.check_player_privs(name, {shout = true}) then
- irc.say("<"..name.."> "..core.strip_colors(message))
+ if core.get_modpath("irc") then
+    irc.say("<"..name.."> "..core.strip_colors(message))
+ end
  core.log("action","CHAT: "..core.format_chat_message(rank..name,core.strip_colors(message)))
  core.chat_send_all(core.format_chat_message(core.colorize(color,rank)..name,message))
  return true
